@@ -1,7 +1,7 @@
 # Личный проект «Кэндишоп» [![Build status][travis-image]][travis-url]
 
 * Студент: [Maria Plieshka](https://up.htmlacademy.ru/javascript/15/user/585879).
-* Наставник: `Неизвестно`.
+* Наставник: [Андрей Дос](https://htmlacademy.ru/profile/andreydos).
 
 ---
 
