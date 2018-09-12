@@ -417,8 +417,32 @@
     </div>
   </section>
 
-  <div class="cardsTemplate">
-  </div>
+  <template id="card">
+    <article class="catalog__card card card--in-stock">
+      <header class="card__header">
+        <h3 class="card__title">Чесночные сливки</h3>
+        <img class="card__img" src="img/cards/ice-garlic.jpg" alt="Мороженное со вкусом чеснока" width="265" height="264">
+        <span class="card__price">230 <span class="card__currency">₽</span><span class="card__weight">/ 70 Г</span></span>
+      </header>
+      <div class="card__main">
+        <div class="card__rating">
+          <button class="card__btn-composition" type="button">Состав</button>
+          <div class="card__stars stars">
+            <span class="stars__rating stars__rating--five">Рейтинг: 5 звёзд</span>
+            <span class="star__count">(300)</span>
+          </div>
+        </div>
+        <div class="card__composition card__composition--hidden">
+          <p class="card__characteristic">Без сахара. 133 ккал</p>
+          <p class="card__composition-list">Молоко, сливки, вода, арамотизатор бекона, пищевой краситель.</p>
+        </div>
+        <p class="card__btns-wrap">
+          <a class="card__btn-favorite" href="#">Добавить в избранное</a>
+          <a class="card__btn" href="#">Добавить +1</a>
+        </p>
+      </div>
+    </article>
+  </template>
 
   <template id="card-order">
     <article class="goods_card card-order">
