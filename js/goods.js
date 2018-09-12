@@ -46,30 +46,33 @@ var cardClass = function (amount) {
 };
 
 var cardRating = function (val) {
-  if (val === 5) {
-    return '.stars__rating--five';
-  } else if (val === 4) {
-    return '.stars__rating--four';
-  } else if (val === 3) {
-    return '.stars__rating--three';
-  } else if (val === 2) {
-    return '.stars__rating--two';
-  } else if (val === 1) {
-    return '.stars__rating--one';
+  switch (val) {
+    case 5: {
+    return '.stars__rating--five'
+    }
+    case 4: {
+    return '.stars__rating--four'
+    } 
+    case 3: {
+    return '.stars__rating--three'
+  } 
+    case 2: {
+    return '.stars__rating--two'
+  } 
+    default: {
+    return '.stars__rating--one'
   }
 };
 
 var cardSugarContent = function (sugar) {
-  if (sugar) {
-    return 'Содержит сахар.';
-  } else {
-    return 'Без сахара.';
-  }
+  return sugar
+    ? 'Содержит сахар.'
+    : 'Без сахара.';
 };
 
 
-
-/*var cardsTemplate = cardsData.map(function(card, i){
+/*
+var cardsTemplate = cardsData.map(function(card, i){
   return `<article id = "${"card_"+i}" class="catalog__card card ${cardClass(card.amount)}">
         <header class="card__header">
           <h3 class="card__title">${card.name}</h3>
@@ -94,5 +97,6 @@ var cardSugarContent = function (sugar) {
           </p>
         </div>
       </article>`}).join(' ');
-      
-  document.querySelector('.catalog__cards').innerHTML = cardsTemplate;/
+
+  document.querySelector('.catalog__cards').innerHTML = cardsTemplate;
+  */
