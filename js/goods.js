@@ -42,27 +42,29 @@ var cardClass = function (amount) {
   } else if (amount === 0) {
     return '.card--soon';
   }
+  return '';
 };
 
 var cardRating = function (val) {
   switch (val) {
     case 5: {
-    return '.stars__rating--five'
+      return '.stars__rating--five';
     }
     case 4: {
-    return '.stars__rating--four'
-    } 
+      return '.stars__rating--four';
+    }
     case 3: {
-    return '.stars__rating--three'
-  } 
+      return '.stars__rating--three';
+    }
     case 2: {
-    return '.stars__rating--two'
-  } 
-  case 1: {
-    return '.stars__rating--one'
-  }
-  default: {
-    return ''
+      return '.stars__rating--two';
+    }
+    case 1: {
+      return '.stars__rating--one';
+    }
+    default: {
+      return '';
+    }
   }
 };
 
@@ -76,41 +78,76 @@ var catalogNode = document.querySelector('.catalog__cards');
 var renderCards = function (cardData, i) {
 
 // article
-var article = cardContent.querySelector('.catalog__card');
-article.classList.remove('card--in-stock');
-article.classList.add(cardClass(cardData.amount));
-article.id = 'card_' + ++i;
+  var article = cardContent.querySelector('.catalog__card');
+  article.classList.remove('card--in-stock');
+  article.classList.add(cardClass(cardData.amount));
+  article.id = 'card_' + ++i;
 
-// title
-cardContent.querySelector('.card__title').textContent = cardData.name;
+  // title
+  cardContent.querySelector('.card__title').textContent = cardData.name;
 
-//product pic
-var picture = cardContent.querySelector('.card__img');
-picture.src = cardData.picture;
-picture.alt = cardData.name;
+  // product pic
+  var picture = cardContent.querySelector('.card__img');
+  picture.src = cardData.picture;
+  picture.alt = cardData.name;
 
-//product price
-var price = cardContent.querySelector('.card__price');
-price.childNodes[0].textContent = cardData.price + ' ';
-price.childNodes[2].textContent = '/ ' + cardData.weight + 'Г';
+  // product price
+  var price = cardContent.querySelector('.card__price');
+  price.childNodes[0].textContent = cardData.price + ' ';
+  price.childNodes[2].textContent = '/ ' + cardData.weight + 'Г';
 
-//product rating
-var rating = cardContent.querySelector('.stars__rating');
-rating.classList.remove('stars__rating--five');
-rating.classList.add(cardRating(cardData.rating.value));
-rating.textContent = 'Рейтинг: ' + cardData.rating.value + ' звёзд';
+  // product rating
+  var rating = cardContent.querySelector('.stars__rating');
+  rating.classList.remove('stars__rating--five');
+  rating.classList.add(cardRating(cardData.rating.value));
+  rating.textContent = 'Рейтинг: ' + cardData.rating.value + ' звёзд';
 
-//product rating number
-cardContent.querySelector('.star__count').textContent = '(' + cardData.rating.number + ')';
+  // product rating number
+  cardContent.querySelector('.star__count').textContent = '(' + cardData.rating.number + ')';
 
-//product nutrition info
-cardContent.querySelector('.card__characteristic').textContent = cardSugarContent(cardData.nutritionFacts.sugar) + cardData.nutritionFacts.energy + ' Ккал';
+  // product nutrition info
+  cardContent.querySelector('.card__characteristic').textContent = cardSugarContent(cardData.nutritionFacts.sugar) + cardData.nutritionFacts.energy + ' Ккал';
 
-//product ingridients list
-cardContent.querySelector('.card__composition-list').textContent = cardData.nutritionFacts.contents;
+  // product ingridients list
+  cardContent.querySelector('.card__composition-list').textContent = cardData.nutritionFacts.contents;
 
-// render
-catalogNode.appendChild(document.importNode(cardContent, true));
+  // render
+  catalogNode.appendChild(document.importNode(cardContent, true));
 };
 
 cardsData.forEach(renderCards);
+
+
+var cardsInCartContent = document.querySelector('#card-order').content;
+var cardsInCartNode = document.querySelector('.goods__cards');
+var randomCartItems = function (items) {
+  var result = [];
+  for (var i = 0; i < 3; i++) {
+    result.push(items[Math.floor(Math.random() * items.length)]);
+  }
+  return result;
+};
+
+var renderCardsInCart = function (cardData) {
+
+  // title
+  cardsInCartContent.querySelector('.card-order__title').textContent = cardData.name;
+
+  // product pic
+  var picture = cardsInCartContent.querySelector('.card-order__img');
+  picture.src = cardData.picture;
+  picture.alt = cardData.name;
+
+  // product price
+  var price = cardsInCartContent.querySelector('.card-order__price');
+  price.textContent = cardData.price + ' ₽';
+
+  // render
+  cardsInCartNode.appendChild(document.importNode(cardsInCartContent, true));
+};
+
+randomCartItems(cardsData).forEach(renderCardsInCart);
+
+cardsInCartNode.classList.remove('goods__cards--empty');
+var emptyCart = document.querySelector('.goods__card-empty');
+emptyCart.classList.add('visually-hidden');
