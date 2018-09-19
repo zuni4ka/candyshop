@@ -33,7 +33,7 @@ var cardsData = productNames.slice(0, 26).map(function (val) {
   };
 });
 
-var cardsCartData = [];
+var cartData = [];
 
 catalogCards.classList.remove('catalog__cards--load');
 document.querySelector('.catalog__cards .catalog__load').classList.add('visually-hidden');
@@ -87,7 +87,7 @@ var fillCard = function (cardData, i) {
 
   card.classList.remove('card--in-stock');
   card.classList.add(cardClass(cardData.amount));
-  card.id = 'card_' + ++i;
+  card.id = i++;
 
   card.querySelector('.card__title').textContent = cardData.name;
 
@@ -116,14 +116,11 @@ var fillCard = function (cardData, i) {
 cardsData.forEach(fillCard);
 catalogCards.appendChild(cardsListTemplate);
 
-var fillCartItems = function (items, cartItems) {
-  for (var i = 0; i < CART_CAPACITY; i++) {
-    var item = items[Math.floor(Math.random() * items.length)];
-    var itemCopy = Object.assign(item, {orderedAmount: 0});
-    delete itemCopy.amount;
-    console.log(itemCopy);
-    cartItems.push(itemCopy);
-  }
+var getCartData = function (cardData) {
+  var cartData = Object.assign(cardData, {orderedAmount: 0});
+  delete cartData.amount;
+
+  return cartData;
 };
 
 var cardsOrderTemplate = document.createDocumentFragment();
@@ -144,14 +141,6 @@ var fillOrderCard = function (cardData) {
   cardsOrderTemplate.appendChild(cardOrder);
 };
 
-fillCartItems(cardsData, cardsCartData);
-cardsCartData.forEach(fillOrderCard);
-
-var cardsInCartNode = document.querySelector('.goods__cards');
-
-cardsInCartNode.appendChild(cardsOrderTemplate);
-cardsInCartNode.classList.remove('goods__cards--empty');
-
 var emptyCart = document.querySelector('.goods__card-empty');
 emptyCart.classList.add('visually-hidden');
 
@@ -166,3 +155,22 @@ var onFavoriteClick = function (event) {
 
 catalogCards.addEventListener('click', onFavoriteClick);
 
+var onAddtoCartClick = function (event) {
+  event.preventDefault();
+  var target = event.target;
+
+  if (target.classList.contains('card__btn')) {
+    var card = target.closest('.catalog__card');
+    var itemData = cardsData[card.id];
+    var cartItemData = getCartData (itemData);
+
+    cartData.push(cartItemData);
+
+    cartData.forEach(fillOrderCard);
+    var cardsInCartNode = document.querySelector('.goods__cards');
+
+    cardsInCartNode.appendChild(cardsOrderTemplate);
+    cardsInCartNode.classList.remove('goods__cards--empty');
+  }
+};
+catalogCards.addEventListener('click', onAddtoCartClick);
