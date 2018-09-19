@@ -33,6 +33,8 @@ var cardsData = productNames.slice(0, 26).map(function (val) {
   };
 });
 
+var cardsCartData = [];
+
 catalogCards.classList.remove('catalog__cards--load');
 document.querySelector('.catalog__cards .catalog__load').classList.add('visually-hidden');
 
@@ -114,12 +116,14 @@ var fillCard = function (cardData, i) {
 cardsData.forEach(fillCard);
 catalogCards.appendChild(cardsListTemplate);
 
-var randomCartItems = function (items) {
-  var result = [];
+var fillCartItems = function (items, cartItems) {
   for (var i = 0; i < CART_CAPACITY; i++) {
-    result.push(items[Math.floor(Math.random() * items.length)]);
+    var item = items[Math.floor(Math.random() * items.length)];
+    var itemCopy = Object.assign(item, {orderedAmount: 0});
+    delete itemCopy.amount;
+    console.log(itemCopy);
+    cartItems.push(itemCopy);
   }
-  return result;
 };
 
 var cardsOrderTemplate = document.createDocumentFragment();
@@ -140,7 +144,8 @@ var fillOrderCard = function (cardData) {
   cardsOrderTemplate.appendChild(cardOrder);
 };
 
-randomCartItems(cardsData).forEach(fillOrderCard);
+fillCartItems(cardsData, cardsCartData);
+cardsCartData.forEach(fillOrderCard);
 
 var cardsInCartNode = document.querySelector('.goods__cards');
 
