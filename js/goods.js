@@ -72,8 +72,8 @@ var ingredients = ['молоко', 'сливки', 'вода', 'пищевой �
 // карта продуктов
 var productsData = {};
 
-// коллекция продуктов в корзине
-var cartData = [];
+// карта продуктов в корзине
+var cartData = {};
 
 // контейнер с продуктами
 var cardsTemplate = document.createDocumentFragment();
@@ -92,7 +92,10 @@ var cart = document.querySelector('.goods__cards');
 
 // наполнение карты продуктов
 productNames.slice(0, 26).forEach(function (val, i) {
-  productsData[i] = {
+  var id = 'product_' + i;
+
+  productsData[id] = {
+    id: id,
     name: val,
     picture: productImages [getRandomFromRange(0, productImages.length)],
     amount: getRandomFromRange(0, 20),
@@ -111,12 +114,12 @@ catalogCards.classList.remove('catalog__cards--load');
 catalogCards.querySelector('.catalog__load').classList.add('visually-hidden');
 
 // наполняет темплейт продуктовой картой
-var fillProductItem = function (cardData, i) {
+var fillProductItem = function (cardData) {
   var card = getElementCopy('#card', '.catalog__card');
 
   card.classList.remove('card--in-stock');
   card.classList.add(getAmountClass(cardData.amount));
-  card.id = i++;
+  card.id = cardData.id;
 
   card.querySelector('.card__title').textContent = cardData.name;
 
@@ -192,7 +195,7 @@ var onToggleFavorite = function (event) {
 var renderCart = function () {
   cart.innerHTML = '';
 
-  cartData.forEach(fillCartItem);
+  Object.values(cartData).forEach(fillCartItem);
 
   cart.appendChild(cardsOrderTemplate);
 };
@@ -201,9 +204,7 @@ var renderCart = function () {
 var addToCart = function (id) {
   // существует ли продукт в коризне?
   // если да, то сохраняем
-  var cartItem = cartData.find(function (item) {
-    return item.id === id;
-  });
+  var cartItem = cartData[id];
 
   if (cartItem) {
     cartItem.orderedAmount++;
@@ -211,7 +212,7 @@ var addToCart = function (id) {
     var itemData = productsData[id];
     var cartItemData = createCartItem(id, itemData);
 
-    cartData.push(cartItemData);
+    cartData[id] = cartItemData;
   }
 
   renderCart();
