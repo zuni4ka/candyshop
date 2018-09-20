@@ -93,6 +93,10 @@ var catalogLoad = catalogCards.querySelector('.catalog__load');
 // заплатка пустой корзины
 var cartPlaceholder = cart.querySelector('.goods__card-empty');
 
+var headerCart = document.querySelector('.main-header__basket');
+
+var headerCartTextEmpty = headerCart.innerHTML;
+
 // наполнение карты продуктов
 productNames.slice(0, 26).forEach(function (val, i) {
   var id = 'product_' + i;
@@ -206,6 +210,24 @@ var onToggleFavorite = function (event) {
   }
 };
 
+var getCartItemsAmount = function() {
+  var amount = 0;
+
+  Object.values(cartData).forEach(function(cartItem) {
+    amount += cartItem.orderedAmount;
+  });
+
+  return amount;
+};
+
+var updateHeaderCart = function (amount) {
+  if (amount) {
+    headerCart.innerHTML = 'Продуктов в корзине: ' + amount;
+  } else {
+    headerCart.innerHTML = headerCartTextEmpty;
+  }
+};
+
 var renderCart = function () {
   var cartList = Object.values(cartData);
 
@@ -238,6 +260,7 @@ var addToCart = function (id) {
 
   renderProducts();
   renderCart();
+  updateHeaderCart(getCartItemsAmount());
 };
 
 // добавляет продукт в корзину
