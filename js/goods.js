@@ -69,22 +69,8 @@ var productImages = ['img/cards/gum-cedar.jpg', 'img/cards/gum-chile.jpg', 'img/
 
 var ingredients = ['молоко', 'сливки', 'вода', 'пищевой краситель', 'патока', 'ароматизатор бекона', 'ароматизатор свинца', 'ароматизатор дуба', 'идентичный натуральному', 'ароматизатор картофеля', 'лимонная кислота', 'загуститель', 'эмульгатор', 'консервант: сорбат калия', 'посолочная смесь: соль, нитрит натрия, ксилит', 'карбамид', 'вилларибо', 'виллабаджо'];
 
-// коллекция продуктов
-var productsData = productNames.slice(0, 26).map(function (val) {
-  return {
-    name: val,
-    picture: productImages [getRandomFromRange(0, productImages.length)],
-    amount: getRandomFromRange(0, 20),
-    price: getRandomFromRange(100, 1500),
-    weight: getRandomFromRange(30, 300),
-    rating: {value: getRandomFromRange(1, 5), number: getRandomFromRange(10, 900)},
-    nutritionFacts: {
-      sugar: getRandomBoolean(),
-      energy: getRandomFromRange(70, 500),
-      contents: getRandomStringFromArray(ingredients),
-    },
-  };
-});
+// карта продуктов
+var productsData = {};
 
 // коллекция продуктов в корзине
 var cartData = [];
@@ -103,6 +89,23 @@ var cart = document.querySelector('.goods__cards');
 
 // заплатка пустой корзины
 // var cartPlaceholder = cart.querySelector('.goods__card-empty');
+
+// наполнение карты продуктов
+productNames.slice(0, 26).forEach(function (val, i) {
+  productsData[i] = {
+    name: val,
+    picture: productImages [getRandomFromRange(0, productImages.length)],
+    amount: getRandomFromRange(0, 20),
+    price: getRandomFromRange(100, 1500),
+    weight: getRandomFromRange(30, 300),
+    rating: {value: getRandomFromRange(1, 5), number: getRandomFromRange(10, 900)},
+    nutritionFacts: {
+      sugar: getRandomBoolean(),
+      energy: getRandomFromRange(70, 500),
+      contents: getRandomStringFromArray(ingredients),
+    },
+  };
+});
 
 catalogCards.classList.remove('catalog__cards--load');
 catalogCards.querySelector('.catalog__load').classList.add('visually-hidden');
@@ -141,7 +144,7 @@ var fillProductItem = function (cardData, i) {
 
 // возвращает скопированный объект продукта как объект корзины
 var createCartItem = function (id, cardData) {
-  var cartItem = Object.assign(cardData, {
+  var cartItem = Object.assign({}, cardData, {
     id: id,
     orderedAmount: 1,
   });
@@ -170,7 +173,7 @@ var fillCartItem = function (cardData) {
 
 var renderProducts = function () {
   // наполняем темплейт картами продуктов
-  productsData.forEach(fillProductItem);
+  Object.values(productsData).forEach(fillProductItem);
 
   // вставляем темплейт в корневой элмент каталога
   catalogCards.appendChild(cardsTemplate);
