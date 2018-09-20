@@ -87,8 +87,11 @@ var catalogCards = document.querySelector('.catalog__cards');
 // корзина
 var cart = document.querySelector('.goods__cards');
 
+// заплатка пустых продуктов
+var catalogLoad = catalogCards.querySelector('.catalog__load');
+
 // заплатка пустой корзины
-// var cartPlaceholder = cart.querySelector('.goods__card-empty');
+var cartPlaceholder = cart.querySelector('.goods__card-empty');
 
 // наполнение карты продуктов
 productNames.slice(0, 26).forEach(function (val, i) {
@@ -111,7 +114,6 @@ productNames.slice(0, 26).forEach(function (val, i) {
 });
 
 catalogCards.classList.remove('catalog__cards--load');
-catalogCards.querySelector('.catalog__load').classList.add('visually-hidden');
 
 // наполняет темплейт продуктовой картой
 var fillProductItem = function (cardData) {
@@ -175,11 +177,23 @@ var fillCartItem = function (cardData) {
 };
 
 var renderProducts = function () {
-  // наполняем темплейт картами продуктов
-  Object.values(productsData).forEach(fillProductItem);
+  var productsList = Object.values(productsData);
 
-  // вставляем темплейт в корневой элмент каталога
-  catalogCards.appendChild(cardsTemplate);
+  if (productsList.length) {
+    // наполняем темплейт картами продуктов
+    productsList.forEach(fillProductItem);
+
+    // чистим каталог
+    catalogCards.innerHTML = '';
+
+    // вставляем темплейт в корневой элмент каталога
+    catalogCards.appendChild(cardsTemplate);
+  } else {
+    // вставляем заплатку
+    catalogCards.appendChild(catalogLoad);
+  }
+
+  // catalogLoad
 };
 
 // меняет фаворит класс
@@ -193,11 +207,17 @@ var onToggleFavorite = function (event) {
 };
 
 var renderCart = function () {
-  cart.innerHTML = '';
+  var cartList = Object.values(cartData);
 
-  Object.values(cartData).forEach(fillCartItem);
+  if (cartList.length) {
+    cartList.forEach(fillCartItem);
 
-  cart.appendChild(cardsOrderTemplate);
+    cart.innerHTML = '';
+
+    cart.appendChild(cardsOrderTemplate);
+  } else {
+    cart.appendChild(cartPlaceholder);
+  }
 };
 
 // добавляет продукт в корзину
@@ -205,16 +225,18 @@ var addToCart = function (id) {
   // существует ли продукт в коризне?
   // если да, то сохраняем
   var cartItem = cartData[id];
+  var itemData = productsData[id];
+
+  // уменьшаем количество элементов в продуктах
+  itemData.amount--;
 
   if (cartItem) {
     cartItem.orderedAmount++;
   } else {
-    var itemData = productsData[id];
-    var cartItemData = createCartItem(id, itemData);
-
-    cartData[id] = cartItemData;
+    cartData[id] = createCartItem(id, itemData);
   }
 
+  renderProducts();
   renderCart();
 };
 
