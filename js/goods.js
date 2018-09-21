@@ -210,10 +210,10 @@ var onToggleFavorite = function (event) {
   }
 };
 
-var getCartItemsAmount = function() {
+var getCartItemsAmount = function () {
   var amount = 0;
 
-  Object.values(cartData).forEach(function(cartItem) {
+  Object.values(cartData).forEach(function (cartItem) {
     amount += cartItem.orderedAmount;
   });
 
