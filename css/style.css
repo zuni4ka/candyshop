@@ -651,6 +651,7 @@ body {
 }
 .card--soon .card__btn {
   background-color: #e8e8e8;
+  pointer-events: none;
 }
 .card--in-stock:hover .card__main {
   box-shadow: 0 8px 18px 0 rgba(130, 218, 3, 0.3);
