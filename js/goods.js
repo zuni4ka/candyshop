@@ -97,6 +97,10 @@ var headerCart = document.querySelector('.main-header__basket');
 
 var headerCartTextEmpty = headerCart.innerHTML;
 
+var payment = document.querySelector('.payment');
+
+var delivery = document.querySelector('.deliver');
+
 // наполнение карты продуктов
 productNames.slice(0, 26).forEach(function (val, i) {
   var id = 'product_' + i;
@@ -196,8 +200,6 @@ var renderProducts = function () {
     // вставляем заплатку
     catalogCards.appendChild(catalogLoad);
   }
-
-  // catalogLoad
 };
 
 // меняет фаворит класс
@@ -275,8 +277,21 @@ var onAddToCart = function (event) {
   }
 };
 
+// переключаем вкладки
+var switchTab = function (event) {
+  var target = event.target;
+
+  if (target.classList.contains('toggle-btn__label')) {
+    target.parentNode.querySelectorAll('input').forEach(function (input) {
+      document.querySelector('.' + input.id).classList.toggle('visually-hidden');
+    });
+  }
+};
+
 // регистрируем слушатели
 catalogCards.addEventListener('click', onToggleFavorite);
 catalogCards.addEventListener('click', onAddToCart);
+payment.addEventListener('click', switchTab);
+delivery.addEventListener('click', switchTab);
 
 renderProducts();
