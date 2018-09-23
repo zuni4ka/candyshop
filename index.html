@@ -215,30 +215,63 @@
                 <div class="payment__inputs">
                   <div class="payment__card-group">
                     <p class="text-input text-input--light payment__input-wrap payment__input-wrap--card-number">
-                      <input type="text" class="text-input__input" name="card-number" id="payment__card-number" placeholder="Номер карты">
+                      <input
+                        type="text"
+                        class="text-input__input"
+                        name="card-number"
+                        id="payment__card-number"
+                        placeholder="Номер карты"
+                        required
+                      />
                       <label class="text-input__label" for="payment__card-number">Номер карты</label>
                     </p>
 
                     <p class="text-input text-input--light payment__input-wrap payment__input-wrap--card-date">
-                      <input type="text" class="text-input__input" name="card-date" id="payment__card-date" placeholder="мм/гг">
+                      <input
+                        type="text"
+                        class="text-input__input"
+                        name="card-date"
+                        id="payment__card-date"
+                        placeholder="мм/гг"
+                        pattern="^(0[1-9]|1[0-2])\/\d{2}$"
+                        required
+                      />
                       <label class="text-input__label" for="payment__card-date">мм/гг</label>
                     </p>
 
                     <p class="text-input text-input--light payment__input-wrap payment__input-wrap--cvc">
-                      <input type="text" class="text-input__input" name="card-cvc" id="payment__card-cvc" placeholder="CVC">
+                      <input
+                        type="text"
+                        class="text-input__input"
+                        name="card-cvc"
+                        id="payment__card-cvc"
+                        placeholder="CVC"
+                        pattern="^[0-9]{3,4}$"
+                        required
+                      />
                       <label class="text-input__label text-input__label--lock" for="payment__card-cvc">CVC</label>
                     </p>
 
                   </div>
                   <div class="payment__cardholder-group">
                     <p class="text-input text-input--light payment__input-wrap payment__input-wrap--cardholder">
-                      <input type="text" class="text-input__input" name="cardholder" id="payment__cardholder" placeholder="ИМЯ ДЕРЖАТЕЛЯ">
+                      <input
+                        type="text"
+                        class="text-input__input"
+                        name="cardholder"
+                        id="payment__cardholder"
+                        placeholder="ИМЯ ДЕРЖАТЕЛЯ"
+                        required
+                      />
                       <label class="text-input__label" for="payment__cardholder">ИМЯ ДЕРЖАТЕЛЯ</label>
                     </p>
 
                     <div class="payment__card-status-wrap">
-                      <p class="payment__card-status-message">Статус карты: <span class="payment__card-status">Не определён</span></p>
-                      <p class="payment__error-message visually-hidden">Система определяет ошибку и пишет где ошибка под неправильным полем</p>
+                      <p class="payment__card-status-message">
+                        Статус карты:
+                        <span class="payment__card-status payment__card-status--invalid">Не определён</span>
+                        <span class="payment__card-status payment__card-status--valid visually-hidden">Одобрен</span>
+                      </p>
                     </div>
 
                   </div>
@@ -482,6 +515,13 @@
       <p>Попробуй ещё раз, нажав <span class="catalog__show-all">«Показать всё»</span> или посмотри что мы предлагаем тебе попробовать.</p>
     </div>
   </template>
+<script>
+  window.candyshop = {};
+</script>
+<script src="js/data.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/tabs.js"></script>
 <script src="js/goods.js"></script>
+<script src="js/payment-validation.js"></script>
 </body>
 </html>
