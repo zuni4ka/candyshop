@@ -18,27 +18,12 @@
   };
 
   // возвращает класс соответствующий рейтингу продукта
-  var getRatingClass = function (val) {
-    switch (val) {
-      case 5: {
-        return 'stars__rating--five';
-      }
-      case 4: {
-        return 'stars__rating--four';
-      }
-      case 3: {
-        return 'stars__rating--three';
-      }
-      case 2: {
-        return 'stars__rating--two';
-      }
-      case 1: {
-        return 'stars__rating--one';
-      }
-      default: {
-        return '';
-      }
-    }
+  var ratingValToClass = {
+    5: 'stars__rating--five',
+    4: 'stars__rating--four',
+    3: 'stars__rating--three',
+    2: 'stars__rating--two',
+    1: 'stars__rating--one'
   };
 
   var getSugarContent = function (sugar) {
@@ -119,7 +104,7 @@
 
     var rating = card.querySelector('.stars__rating');
     rating.classList.remove('stars__rating--five');
-    rating.classList.add(getRatingClass(cardData.rating.value));
+    rating.classList.add(ratingValToClass[cardData.rating.value]);
     rating.textContent = 'Рейтинг: ' + cardData.rating.value + ' звёзд';
 
     card.querySelector('.star__count').textContent = '(' + cardData.rating.number + ')';
