@@ -1260,25 +1260,37 @@ body {
 }
 .range__btn {
   position: absolute;
-  width: 10px;
-  height: 10px;
-  background-color: #6e58d9;
+  z-index: 1;
+  margin-top: -15px;
+  width: 40px;
+  height: 40px;
   border: 0;
   padding: 0;
   font-size: 0;
-  border-radius: 50%;
+  background-color: transparent;
 }
 .range__btn--left {
-  left: 15%;
+  text-align: left;
+  left: 0;
 }
 .range__btn--right {
-  right: 15%;
+  text-align: right;
+  right: 0;
 }
+
+.range__btn-content {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: #6e58d9;
+  border-radius: 50%;
+}
+
 .range__fill-line {
   position: absolute;
   background-color: #6e58d9;
-  left: 15%;
-  right: 15%;
+  left: 0;
+  right: 0;
   top: 3px;
   height: 4px;
 }

@@ -1,9 +1,14 @@
 'use strict';
 
+var PRICE_MIN = 100;
+var PRICE_MAX = 1500;
+
 (function () {
   var data = window.candyshop.data;
   var utils = window.candyshop.utils;
   var tabs = window.candyshop.tabs;
+  var filters = window.candyshop.filters;
+  var slider = window.candyshop.slider;
 
   // возвращает класс соответствующий количеству единиц продукта
   var getAmountClass = function (amount) {
@@ -31,7 +36,7 @@
   };
 
   // карта продуктов
-  var productsData = {};
+  var productsMap = {};
 
   // карта продуктов в корзине
   var cartData = {};
@@ -63,15 +68,15 @@
   var delivery = document.querySelector('.deliver');
 
   // наполнение карты продуктов
-  data.productNames.slice(0, 26).forEach(function (val, i) {
+  utils.getRandoms(data.productNames, 26).forEach(function (val, i) {
     var id = 'product_' + i;
 
-    productsData[id] = {
+    productsMap[id] = {
       id: id,
       name: val,
       picture: data.productImages[utils.getRandomFromRange(0, data.productImages.length)],
       amount: utils.getRandomFromRange(0, 20),
-      price: utils.getRandomFromRange(100, 1500),
+      price: utils.getRandomFromRange(PRICE_MIN, PRICE_MAX),
       weight: utils.getRandomFromRange(30, 300),
       rating: {value: utils.getRandomFromRange(1, 5), number: utils.getRandomFromRange(10, 900)},
       nutritionFacts: {
@@ -81,6 +86,8 @@
       },
     };
   });
+
+  var currentProductMap = productsMap;
 
   catalogCards.classList.remove('catalog__cards--load');
 
@@ -145,8 +152,8 @@
     cardsOrderTemplate.appendChild(cardItem);
   };
 
-  var renderProducts = function () {
-    var productsList = Object.values(productsData);
+  var renderProducts = function (prodData) {
+    var productsList = Object.values(prodData);
 
     if (productsList.length) {
       // наполняем темплейт картами продуктов
@@ -210,7 +217,7 @@
     // существует ли продукт в коризне?
     // если да, то сохраняем
     var cartItem = cartData[id];
-    var itemData = productsData[id];
+    var itemData = currentProductMap[id];
 
     // уменьшаем количество элементов в продуктах
     itemData.amount--;
@@ -221,7 +228,7 @@
       cartData[id] = createCartItem(id, itemData);
     }
 
-    renderProducts();
+    renderProducts(currentProductMap);
     renderCart();
     updateHeaderCart(getCartItemsAmount());
   };
@@ -238,11 +245,19 @@
     }
   };
 
+  // реагируем на изменение цены
+  var onPriceChange = function (result) {
+    renderProducts(filters.byPrice(currentProductMap, result.min, result.max));
+  };
+
+    // инициализируем компоненты
+  slider.init(document.querySelector('.range'), 0, PRICE_MAX, onPriceChange);
+
   // регистрируем слушатели
   catalogCards.addEventListener('click', onToggleFavorite);
   catalogCards.addEventListener('click', onAddToCart);
   payment.addEventListener('click', tabs.switchTab);
   delivery.addEventListener('click', tabs.switchTab);
 
-  renderProducts();
+  renderProducts(currentProductMap);
 })();
