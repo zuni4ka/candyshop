@@ -147,8 +147,12 @@
 
     <section class="buy">
       <h2 class="visually-hidden">Оформление покупки</h2>
-
-      <form action="/" method="post">
+      <form
+        action="/"
+        method="post"
+        id="form-order"
+        enctype="multipart/form-data"
+      >
         <section class="goods">
           <div class="goods__wrap container">
             <h2 class="group-title goods__title" id="basket">Твои покупки</h2>
@@ -210,7 +214,7 @@
 
               <p class="payment__method toggle-btn">
                 <input type="radio" class="toggle-btn__input visually-hidden" name="pay-method" value="card" id="payment__card" checked>
-                <label for="payment__card" class="toggle-btn__label">Банковская карта</label>
+                <label for="payment__card" class="toggle-btn__label toggle-btn__label--active">Банковская карта</label>
                 <input type="radio" class="toggle-btn__input visually-hidden" name="pay-method" value="cash" id="payment__cash">
                 <label for="payment__cash" class="toggle-btn__label">Наличные при получении</label>
               </p>
@@ -299,7 +303,7 @@
 
             <p class="deliver__toggle toggle-btn">
               <input type="radio" class="toggle-btn__input visually-hidden" name="method-deliver" value="store" id="deliver__store" checked>
-              <label for="deliver__store" class="toggle-btn__label">Заеду</label>
+              <label for="deliver__store" class="toggle-btn__label toggle-btn__label--active">Заеду</label>
               <input type="radio" class="toggle-btn__input visually-hidden" name="method-deliver" value="courier" id="deliver__courier">
               <label for="deliver__courier" class="toggle-btn__label">Хочу курьером</label>
             </p>
@@ -438,16 +442,16 @@
     </div>
   </footer>
 
-  <section class="modal modal--hidden">
+  <section class="modal modal--error modal--hidden">
     <div class="modal__inner">
       <button class="modal__close" type="button">Закрыть окно</button>
       <h3 class="modal__title">Произошла ошибка!</h3>
-      <p class="modal__message">Код ошибки: 404.</p>
-      <p class="modal__message">Пожалуйста, перезагрузите страницу.</p>
+      <p class="modal__message"></p>
+      <p class="modal__message">Пожалуйста, <a href="./">перезагрузите</a> страницу.</p>
     </div>
   </section>
 
-  <section class="modal modal--hidden">
+  <section class="modal modal--success modal--hidden">
     <div class="modal__inner">
       <button class="modal__close" type="button">Закрыть окно</button>
       <h3 class="modal__title">Данные успешно отправлены!</h3>
@@ -522,7 +526,8 @@
 <script>
   window.candyshop = {};
 </script>
-<script src="js/data.js"></script>
+<script src="js/backend.js"></script>
+<script src="js/modal.js"></script>
 <script src="js/utils.js"></script>
 <script src="js/tabs.js"></script>
 <script src="js/range-price-slider.js"></script>
