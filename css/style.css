@@ -244,6 +244,10 @@ body {
   margin-right: 14px;
 }
 
+.toggle-btn__label--active {
+  pointer-events: none;
+}
+
 /*header*/
 
 .main-header {
@@ -1261,9 +1265,9 @@ body {
 .range__btn {
   position: absolute;
   z-index: 1;
-  margin-top: -15px;
-  width: 40px;
-  height: 40px;
+  margin-top: -5px;
+  width: 20px;
+  height: 20px;
   border: 0;
   padding: 0;
   font-size: 0;

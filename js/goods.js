@@ -1,14 +1,14 @@
 'use strict';
 
-var PRICE_MIN = 100;
-var PRICE_MAX = 1500;
-
 (function () {
-  var data = window.candyshop.data;
-  var utils = window.candyshop.utils;
-  var tabs = window.candyshop.tabs;
-  var filters = window.candyshop.filters;
-  var slider = window.candyshop.slider;
+  var candyshop = window.candyshop;
+
+  var backend = candyshop.backend;
+  var utils = candyshop.utils;
+  var tabs = candyshop.tabs;
+  var filters = candyshop.filters;
+  var slider = candyshop.slider;
+  var modal = candyshop.modal;
 
   // возвращает класс соответствующий количеству единиц продукта
   var getAmountClass = function (amount) {
@@ -28,15 +28,14 @@ var PRICE_MAX = 1500;
     4: 'stars__rating--four',
     3: 'stars__rating--three',
     2: 'stars__rating--two',
-    1: 'stars__rating--one'
+    1: 'stars__rating--one',
   };
 
   var getSugarContent = function (sugar) {
     return sugar ? 'Содержит сахар. ' : 'Без сахара. ';
   };
 
-  // карта продуктов
-  var productsMap = {};
+  var products = {};
 
   // карта продуктов в корзине
   var cartData = {};
@@ -67,27 +66,7 @@ var PRICE_MAX = 1500;
 
   var delivery = document.querySelector('.deliver');
 
-  // наполнение карты продуктов
-  utils.getRandoms(data.productNames, 26).forEach(function (val, i) {
-    var id = 'product_' + i;
-
-    productsMap[id] = {
-      id: id,
-      name: val,
-      picture: data.productImages[utils.getRandomFromRange(0, data.productImages.length)],
-      amount: utils.getRandomFromRange(0, 20),
-      price: utils.getRandomFromRange(PRICE_MIN, PRICE_MAX),
-      weight: utils.getRandomFromRange(30, 300),
-      rating: {value: utils.getRandomFromRange(1, 5), number: utils.getRandomFromRange(10, 900)},
-      nutritionFacts: {
-        sugar: utils.getRandomBoolean(),
-        energy: utils.getRandomFromRange(70, 500),
-        contents: utils.getRandomStringFromArray(data.ingredients),
-      },
-    };
-  });
-
-  var currentProductMap = productsMap;
+  var orderForm = document.querySelector('#form-order');
 
   catalogCards.classList.remove('catalog__cards--load');
 
@@ -102,7 +81,7 @@ var PRICE_MAX = 1500;
     card.querySelector('.card__title').textContent = cardData.name;
 
     var picture = card.querySelector('.card__img');
-    picture.src = cardData.picture;
+    picture.src = 'img/cards/' + cardData.picture;
     picture.alt = cardData.name;
 
     var price = card.querySelector('.card__price');
@@ -141,7 +120,7 @@ var PRICE_MAX = 1500;
     cardItem.querySelector('.card-order__title').textContent = cardData.name;
 
     var picture = cardItem.querySelector('.card-order__img');
-    picture.src = cardData.picture;
+    picture.src = 'img/cards/' + cardData.picture;
     picture.alt = cardData.name;
 
     var price = cardItem.querySelector('.card-order__price');
@@ -217,7 +196,7 @@ var PRICE_MAX = 1500;
     // существует ли продукт в коризне?
     // если да, то сохраняем
     var cartItem = cartData[id];
-    var itemData = currentProductMap[id];
+    var itemData = products[id];
 
     // уменьшаем количество элементов в продуктах
     itemData.amount--;
@@ -228,7 +207,7 @@ var PRICE_MAX = 1500;
       cartData[id] = createCartItem(id, itemData);
     }
 
-    renderProducts(currentProductMap);
+    renderProducts(products);
     renderCart();
     updateHeaderCart(getCartItemsAmount());
   };
@@ -245,19 +224,57 @@ var PRICE_MAX = 1500;
     }
   };
 
-  // реагируем на изменение цены
-  var onPriceChange = function (result) {
-    renderProducts(filters.byPrice(currentProductMap, result.min, result.max));
+  var onOrderSuccess = function () {
+    modal.callSuccess();
   };
 
+  var onOrderFail = function (error) {
+    modal.callError(error);
+  };
+
+  var onOrderSubmit = function (event) {
+    backend.save(new FormData(orderForm), onOrderSuccess, onOrderFail);
+    event.preventDefault();
+  };
+
+  // реагируем на изменение цены
+  var onPriceChange = function (result) {
+    renderProducts(filters.byPrice(products, result.min, result.max));
+  };
+
+  var onDataLoad = function (data) {
+    var minPrice = 0;
+    var maxPrice = 0;
+
+    data.forEach(function (item, i) {
+      var id = 'product_' + i;
+      var price = item.price;
+
+      if (price < minPrice) {
+        minPrice = price;
+      }
+
+      if (price > maxPrice) {
+        maxPrice = price;
+      }
+
+      item.id = id;
+
+      products[id] = item;
+    });
+
     // инициализируем компоненты
-  slider.init(document.querySelector('.range'), 0, PRICE_MAX, onPriceChange);
+    slider.init(document.querySelector('.range'), minPrice, maxPrice, onPriceChange);
+
+    renderProducts(products);
+  };
+
+  backend.load(onDataLoad, modal.callErrorModal);
 
   // регистрируем слушатели
   catalogCards.addEventListener('click', onToggleFavorite);
   catalogCards.addEventListener('click', onAddToCart);
+  orderForm.addEventListener('submit', onOrderSubmit);
   payment.addEventListener('click', tabs.switchTab);
   delivery.addEventListener('click', tabs.switchTab);
-
-  renderProducts(currentProductMap);
 })();
