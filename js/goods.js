@@ -250,7 +250,7 @@
       var id = 'product_' + i;
       var price = item.price;
 
-      if (price < minPrice) {
+      if (i === 0) {
         minPrice = price;
       }
 
