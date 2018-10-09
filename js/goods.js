@@ -37,6 +37,8 @@
 
   var products = {};
 
+  var currentProducts = products;
+
   // карта продуктов в корзине
   var cartData = {};
 
@@ -239,11 +241,14 @@
 
   // реагируем на изменение цены
   var onPriceChange = function (result) {
-    renderProducts(filters.byPrice(products, result.min, result.max));
+    currentProducts = filters.byPrice(products, result.min, result.max);
+
+    renderProducts(currentProducts);
+    filters.renderSidebar(currentProducts);
   };
 
   var onDataLoad = function (data) {
-    var minPrice = 0;
+    var minPrice;
     var maxPrice = 0;
 
     data.forEach(function (item, i) {
@@ -251,6 +256,8 @@
       var price = item.price;
 
       if (i === 0) {
+        minPrice = price;
+      } else if (price < minPrice) {
         minPrice = price;
       }
 
@@ -267,6 +274,7 @@
     slider.init(document.querySelector('.range'), minPrice, maxPrice, onPriceChange);
 
     renderProducts(products);
+    filters.renderSidebar(products);
   };
 
   backend.load(onDataLoad, modal.callErrorModal);
