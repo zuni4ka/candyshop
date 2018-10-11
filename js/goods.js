@@ -35,9 +35,11 @@
     return sugar ? 'Содержит сахар. ' : 'Без сахара. ';
   };
 
-  var products = {};
+  // продукты при получении
+  var initialProducts = {};
 
-  var currentProducts = products;
+  // текущие продукты
+  var products = initialProducts;
 
   // карта продуктов в корзине
   var cartData = {};
@@ -198,7 +200,7 @@
     // существует ли продукт в коризне?
     // если да, то сохраняем
     var cartItem = cartData[id];
-    var itemData = products[id];
+    var itemData = initialProducts[id];
 
     // уменьшаем количество элементов в продуктах
     itemData.amount--;
@@ -209,7 +211,7 @@
       cartData[id] = createCartItem(id, itemData);
     }
 
-    renderProducts(products);
+    renderProducts(initialProducts);
     renderCart();
     updateHeaderCart(getCartItemsAmount());
   };
@@ -241,10 +243,10 @@
 
   // реагируем на изменение цены
   var onPriceChange = function (result) {
-    currentProducts = filters.byPrice(products, result.min, result.max);
+    products = filters.byPrice(initialProducts, result.min, result.max);
 
-    renderProducts(currentProducts);
-    filters.renderSidebar(currentProducts);
+    renderProducts(products);
+    filters.renderSidebar(products);
   };
 
   var onDataLoad = function (data) {
@@ -267,14 +269,14 @@
 
       item.id = id;
 
-      products[id] = item;
+      initialProducts[id] = item;
     });
 
     // инициализируем компоненты
     slider.init(document.querySelector('.range'), minPrice, maxPrice, onPriceChange);
 
-    renderProducts(products);
-    filters.renderSidebar(products);
+    renderProducts(initialProducts);
+    filters.renderSidebar(initialProducts);
   };
 
   backend.load(onDataLoad, modal.callErrorModal);

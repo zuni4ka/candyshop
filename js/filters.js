@@ -22,7 +22,6 @@
 
     var filtersSidebar = document.querySelector('.catalog__sidebar');
     var outputPrice = filtersSidebar.querySelector('#output-price');
-    var outputFavorite = filtersSidebar.querySelector('#output-favorite');
 
     var outputs = {
       icecream: {
@@ -51,7 +50,7 @@
       },
       vegetarian: {
         count: 0,
-        node: filtersSidebar.querySelector('#output-vegetarian'),            
+        node: filtersSidebar.querySelector('#output-vegetarian'),
       },
       glutenFree: {
         count: 0,
@@ -60,6 +59,10 @@
       availability: {
         count: 0,
         node: filtersSidebar.querySelector('#output-availability'),
+      },
+      favorite: {
+        count: 0,
+        node: filtersSidebar.querySelector('#output-favorite'),
       },
     };
 
