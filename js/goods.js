@@ -72,6 +72,8 @@
 
   var orderForm = document.querySelector('#form-order');
 
+  var filtersSidebar = document.querySelector('.catalog__sidebar');
+
   catalogCards.classList.remove('catalog__cards--load');
 
   // наполняет темплейт продуктовой картой
@@ -249,6 +251,35 @@
     filters.renderSidebar(products);
   };
 
+  var onFilterClick = function (event) {
+    var target = event.target;
+
+    var id = target.id;
+
+    if (!id) {
+      return;
+    }
+
+    filters.onFilterClick(event);
+
+    var productKeys = Object.keys(products);
+    var filteredProducts = {};
+
+    Object.values(filters.getFilters()).forEach(function (filter) {
+      if (filter.isActive) {
+        productKeys.forEach(function (key) {
+          var product = products[key];
+
+          if (filter.filter(product)) {
+            filteredProducts[key] = products[key];
+          }
+        });
+      }
+    });
+
+    renderProducts(filteredProducts);
+  };
+
   var onDataLoad = function (data) {
     var minPrice;
     var maxPrice = 0;
@@ -287,4 +318,5 @@
   orderForm.addEventListener('submit', onOrderSubmit);
   payment.addEventListener('click', tabs.switchTab);
   delivery.addEventListener('click', tabs.switchTab);
+  filtersSidebar.addEventListener('click', onFilterClick);
 })();
