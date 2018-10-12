@@ -118,7 +118,25 @@ function recalculate(rangeValue, rangeMax, max) {
     btnRight.addEventListener('mousedown', onMouseDown);
   };
 
+  var reset = function (rangeElement, min, max) {
+    var rangeFilter = rangeElement.querySelector('.range__filter');
+    var btnRight = rangeElement.querySelector('.range__btn--right');
+    var btnLeft = rangeElement.querySelector('.range__btn--left');
+    var fillLine = rangeElement.querySelector('.range__fill-line');
+    var priceMax = rangeElement.querySelector('.range__price--max');
+    var priceMin = rangeElement.querySelector('.range__price--min');
+
+    priceMin.textContent = min;
+    priceMax.textContent = max;
+
+    fillLine.style.left = 0;
+    fillLine.style.right = 0;
+    btnLeft.style.left = 0;
+    btnRight.style.left = rangeFilter.offsetWidth - btnRight.offsetWidth + 'px';
+  };
+
   window.candyshop.slider = {
     init: init,
+    reset: reset,
   };
 })();
