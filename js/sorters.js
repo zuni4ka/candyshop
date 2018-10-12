@@ -58,17 +58,18 @@
   };
 
   var pickSorter = function (id) {
-    var sorteriumKeys = Object.keys(sorterium);
-
-    sorteriumKeys.forEach(function (key) {
+    Object.keys(sorterium).forEach(function (key) {
       sorterium[key].isActive = key === id;
     });
+  };
 
-    return sorteriumKeys.includes(id);
+  var getSorterium = function () {
+    return sorterium;
   };
 
   window.candyshop.sorters = {
     apply: apply,
     pickSorter: pickSorter,
+    getSorterium: getSorterium,
   };
 })();

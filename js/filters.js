@@ -4,6 +4,7 @@
   var createFiltrarium = function (minPrice, maxPrice) {
     return {
       'filter-icecream': {
+        id: 'filter-icecream',
         type: 'accumulative',
         count: 0,
         isActive: false,
@@ -13,6 +14,7 @@
         },
       },
       'filter-soda': {
+        id: 'filter-soda',
         type: 'accumulative',
         count: 0,
         isActive: false,
@@ -22,6 +24,7 @@
         },
       },
       'filter-gum': {
+        id: 'filter-gum',
         type: 'accumulative',
         count: 0,
         isActive: false,
@@ -31,6 +34,7 @@
         },
       },
       'filter-marmalade': {
+        id: 'filter-marmalade',
         type: 'accumulative',
         count: 0,
         isActive: false,
@@ -40,6 +44,7 @@
         },
       },
       'filter-marshmallows': {
+        id: 'filter-marshmallows',
         type: 'accumulative',
         count: 0,
         isActive: false,
@@ -49,6 +54,7 @@
         },
       },
       'filter-sugar-free': {
+        id: 'filter-sugar-free',
         type: 'decresent',
         count: 0,
         isActive: false,
@@ -58,6 +64,7 @@
         },
       },
       'filter-vegetarian': {
+        id: 'filter-vegetarian',
         type: 'decresent',
         count: 0,
         isActive: false,
@@ -67,6 +74,7 @@
         },
       },
       'filter-gluten-free': {
+        id: 'filter-gluten-free',
         type: 'decresent',
         count: 0,
         isActive: false,
@@ -76,7 +84,8 @@
         },
       },
       'filter-availability': {
-        type: 'decresent',
+        id: 'filter-availability',
+        type: 'cleaner',
         count: 0,
         isActive: false,
         outputId: 'output-availability',
@@ -85,7 +94,8 @@
         },
       },
       'filter-favorite': {
-        type: 'decresent',
+        id: 'filter-favorite',
+        type: 'cleaner',
         count: 0,
         isActive: false,
         outputId: 'output-favorite',
@@ -94,6 +104,7 @@
         },
       },
       'filter-price': {
+        id: 'filter-price',
         type: 'decresent',
         count: 0,
         min: minPrice,
@@ -131,6 +142,21 @@
     var filters = Object.values(filtrarium);
 
     filters.forEach(function (filter) {
+      if (filter.isActive && filter.type === 'cleaner') {
+        filters.forEach(function (otherFilter) {
+          if (
+            otherFilter.id !== filter.id
+          ) {
+            if (otherFilter.id !== 'filter-price') {
+              otherFilter.isActive = false;
+              document.getElementById(otherFilter.id).checked = false;
+            }
+          }
+        });
+      }
+    });
+
+    filters.forEach(function (filter) {
       if (filter.isActive && filter.type === 'accumulative') {
         productKeys.forEach(function (key) {
           var product = products[key];
@@ -147,7 +173,13 @@
     }
 
     filters.forEach(function (filter) {
-      if (filter.isActive && filter.type === 'decresent') {
+      if (
+        filter.isActive
+        && (
+          filter.type === 'decresent'
+          || filter.type === 'cleaner'
+        )
+      ) {
         Object.keys(filteredProducts).forEach(function (key) {
           var product = filteredProducts[key];
 
@@ -194,12 +226,17 @@
   };
 
   var toggleFilter = function (id, status) {
-    if (Object.keys(filtrarium).includes(id)) {
-      filtrarium[id].isActive = status;
-      return true;
+    if (id === 'filter-favorite') {
+      filtrarium['filter-availability'].isActive = false;
+      document.getElementById('filter-availability').checked = false;
     }
 
-    return false;
+    if (id === 'filter-availability') {
+      filtrarium['filter-favorite'].isActive = false;
+      document.getElementById('filter-favorite').checked = false;
+    }
+
+    filtrarium[id].isActive = status;
   };
 
   var reset = function (products, minPrice, maxPrice) {
@@ -218,5 +255,6 @@
     toggleFilter: toggleFilter,
     updatePriceFilter: updatePriceFilter,
     reset: reset,
+    getFiltrarium: getFiltrarium,
   };
 })();
