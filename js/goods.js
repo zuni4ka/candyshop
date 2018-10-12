@@ -132,7 +132,7 @@
   var fillCartItem = function (cardData) {
     var cardItem = utils.getElementCopy('#card-order', '.card-order');
 
-    cardItem.id = cardData.id
+    cardItem.id = cardData.id;
 
     cardItem.querySelector('.card-order__title').textContent = cardData.name;
 
