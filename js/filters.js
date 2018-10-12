@@ -1,186 +1,222 @@
 'use strict';
 
 (function () {
-  var filtersSidebar = document.querySelector('.catalog__sidebar');
-  var outputPrice = filtersSidebar.querySelector('#output-price');
+  var createFiltrarium = function (minPrice, maxPrice) {
+    return {
+      'filter-icecream': {
+        type: 'accumulative',
+        count: 0,
+        isActive: false,
+        outputId: 'output-icecream',
+        filter: function (product) {
+          return product.kind === 'Мороженое';
+        },
+      },
+      'filter-soda': {
+        type: 'accumulative',
+        count: 0,
+        isActive: false,
+        outputId: 'output-soda',
+        filter: function (product) {
+          return product.kind === 'Газировка';
+        },
+      },
+      'filter-gum': {
+        type: 'accumulative',
+        count: 0,
+        isActive: false,
+        outputId: 'output-gum',
+        filter: function (product) {
+          return product.kind === 'Жевательная резинка';
+        },
+      },
+      'filter-marmalade': {
+        type: 'accumulative',
+        count: 0,
+        isActive: false,
+        outputId: 'output-marmalade',
+        filter: function (product) {
+          return product.kind === 'Мармелад';
+        },
+      },
+      'filter-marshmallows': {
+        type: 'accumulative',
+        count: 0,
+        isActive: false,
+        outputId: 'output-marshmallows',
+        filter: function (product) {
+          return product.kind === 'Зефир';
+        },
+      },
+      'filter-sugar-free': {
+        type: 'decresent',
+        count: 0,
+        isActive: false,
+        outputId: 'output-sugar-free',
+        filter: function (product) {
+          return product.nutritionFacts.sugar === false;
+        },
+      },
+      'filter-vegetarian': {
+        type: 'decresent',
+        count: 0,
+        isActive: false,
+        outputId: 'output-vegetarian',
+        filter: function (product) {
+          return product.nutritionFacts.vegetarian;
+        },
+      },
+      'filter-gluten-free': {
+        type: 'decresent',
+        count: 0,
+        isActive: false,
+        outputId: 'output-gluten-free',
+        filter: function (product) {
+          return product.nutritionFacts.gluten;
+        },
+      },
+      'filter-availability': {
+        type: 'decresent',
+        count: 0,
+        isActive: false,
+        outputId: 'output-availability',
+        filter: function (product) {
+          return product.amount > 0;
+        },
+      },
+      'filter-favorite': {
+        type: 'decresent',
+        count: 0,
+        isActive: false,
+        outputId: 'output-favorite',
+        filter: function (product) {
+          return product.isFavorite;
+        },
+      },
+      'filter-price': {
+        type: 'decresent',
+        count: 0,
+        min: minPrice,
+        max: maxPrice,
+        isActive: true,
+        outputId: 'output-price',
+        filter: function (product) {
+          var priceFilter = getFiltrarium()['filter-price'];
+          var price = product.price;
 
-  var filters = {
-    'filter-icecream': {
-      count: 0,
-      isActive: false,
-      filter: function (product) {
-        return product.kind === 'Мороженое';
+          return price >= priceFilter.min && price <= priceFilter.max;
+        },
       },
-      outputNode: filtersSidebar.querySelector('#output-icecream'),
-    },
-    'filter-soda': {
-      count: 0,
-      isActive: false,
-      filter: function (product) {
-        return product.kind === 'Газировка';
-      },
-      outputNode: filtersSidebar.querySelector('#output-soda'),
-    },
-    'filter-gum': {
-      count: 0,
-      isActive: false,
-      filter: function (product) {
-        return product.kind === 'Жевательная резинка';
-      },
-      outputNode: filtersSidebar.querySelector('#output-gum'),
-    },
-    'filter-marmalade': {
-      count: 0,
-      isActive: false,
-      filter: function (product) {
-        return product.kind === 'Мармелад';
-      },
-      outputNode: filtersSidebar.querySelector('#output-marmalade'),
-    },
-    'filter-marshmallows': {
-      count: 0,
-      isActive: false,
-      filter: function (product) {
-        return product.kind === 'Зефир';
-      },
-      outputNode: filtersSidebar.querySelector('#output-marshmallows'),
-    },
-    'filter-sugar-free': {
-      count: 0,
-      isActive: false,
-      filter: function (product) {
-        console.log(product);
-
-        return product.nutritionFacts.sugar === false;
-      },
-      outputNode: filtersSidebar.querySelector('#output-sugar-free'),
-    },
-    'filter-vegetarian': {
-      count: 0,
-      isActive: false,
-      filter: function (product) {
-        return product.nutritionFacts.vegetarian;
-      },
-      outputNode: filtersSidebar.querySelector('#output-vegetarian'),
-    },
-    'filter-gluten-free': {
-      count: 0,
-      isActive: false,
-      filter: function (product) {
-        return product.nutritionFacts.gluten;
-      },
-      outputNode: filtersSidebar.querySelector('#output-gluten-free'),
-    },
-    'filter-availability': {
-      count: 0,
-      isActive: false,
-      filter: function (product) {
-        return product.amount > 0;
-      },
-      outputNode: filtersSidebar.querySelector('#output-availability'),
-    },
-    'filter-favorite': {
-      count: 0,
-      isActive: false,
-      filter: function (product) {
-        return product.isFavorite;
-      },
-      outputNode: filtersSidebar.querySelector('#output-favorite'),
-    },
+    };
   };
+
+  var filtrarium = {};
 
   var wrapInParentheses = function (val) {
     return '(' + val + ')';
   };
 
-  var byPrice = function (map, min, max) {
-    var mapCopy = Object.assign({}, map);
+  var updatePriceFilter = function (min, max) {
+    var priceFilter = filtrarium['filter-price'];
 
-    Object.values(mapCopy).forEach(function (product) {
-      var price = product.price;
-
-      if (price < min || price > max) {
-        delete mapCopy[product.id];
-      }
-    });
-
-    return mapCopy;
+    priceFilter.min = min;
+    priceFilter.max = max;
   };
 
-  function updateCounters(products) {
-    var productList = Object.values(products);
+  var apply = function (initialProducts) {
+    var products = Object.assign({}, initialProducts);
 
-    productList.forEach(function (product) {
-      switch (product.kind) {
-        case 'Мороженое': {
-          filters['filter-icecream'].count++;
-          break;
-        }
-        case 'Газировка': {
-          filters['filter-soda'].count++;
-          break;
-        }
-        case 'Жевательная резинка': {
-          filters['filter-gum'].count++;
-          break;
-        }
-        case 'Мармелад': {
-          filters['filter-marmalade'].count++;
-          break;
-        }
-        case 'Зефир': {
-          filters['filter-marshmallows'].count++;
-          break;
-        }
-        default: {
-          break;
-        }
-      }
+    var productKeys = Object.keys(products);
+    var filteredProducts = {};
+    var filters = Object.values(filtrarium);
 
-      if (product.nutritionFacts.sugar === false) {
-        filters['filter-sugar-free'].count++;
-      }
+    filters.forEach(function (filter) {
+      if (filter.isActive && filter.type === 'accumulative') {
+        productKeys.forEach(function (key) {
+          var product = products[key];
 
-      if (product.nutritionFacts.vegetarian) {
-        filters['filter-vegetarian'].count++;
-      }
-
-      if (product.nutritionFacts.gluten) {
-        filters['filter-gluten-free'].count++;
-      }
-
-      if (product.amount > 0) {
-        filters['filter-availability'].count++;
+          if (filter.filter(product)) {
+            filteredProducts[key] = products[key];
+          }
+        });
       }
     });
 
-    Object.keys(filters).forEach(function (key) {
-      filters[key].outputNode.textContent = wrapInParentheses(filters[key].count);
+    if (!Object.keys(filteredProducts).length) {
+      filteredProducts = products;
+    }
+
+    filters.forEach(function (filter) {
+      if (filter.isActive && filter.type === 'decresent') {
+        Object.keys(filteredProducts).forEach(function (key) {
+          var product = filteredProducts[key];
+
+          if (!filter.filter(product)) {
+            delete filteredProducts[key];
+          }
+        });
+      }
     });
 
-    outputPrice.textContent = wrapInParentheses(productList.length);
-  }
+    renderSidebar(filteredProducts);
+
+    return filteredProducts;
+  };
 
   function renderSidebar(products) {
-    updateCounters(products);
+    var productList = Object.values(products);
+    var filtersList = Object.values(filtrarium);
+    var filtersKeys = Object.keys(filtrarium);
+
+    filtersList.forEach(function (filter) {
+      filter.count = 0;
+    });
+
+    productList.forEach(function (product) {
+      filtersList.forEach(function (filter) {
+        if (filter.filter(product)) {
+          filter.count++;
+        }
+      });
+    });
+
+    filtersKeys.forEach(function (key) {
+      var id = filtrarium[key].outputId;
+
+      if (id) {
+        document.getElementById(id).textContent = wrapInParentheses(filtrarium[key].count);
+      }
+    });
   }
 
-  function onFilterClick(event) {
-    var id = event.target.id;
+  var getFiltrarium = function () {
+    return filtrarium;
+  };
 
-    if (Object.keys(filters).includes(id)) {
-      filters[id].isActive = event.target.checked;
+  var toggleFilter = function (id, status) {
+    if (Object.keys(filtrarium).includes(id)) {
+      filtrarium[id].isActive = status;
+      return true;
     }
-  }
 
-  function getFilters() {
-    return filters;
-  }
+    return false;
+  };
+
+  var reset = function (products, minPrice, maxPrice) {
+    filtrarium = createFiltrarium(minPrice, maxPrice);
+    renderSidebar(products);
+  };
+
+  var init = function (products, minPrice, maxPrice) {
+    filtrarium = createFiltrarium(minPrice, maxPrice);
+    renderSidebar(products);
+  };
 
   window.candyshop.filters = {
-    renderSidebar: renderSidebar,
-    byPrice: byPrice,
-    onFilterClick: onFilterClick,
-    getFilters: getFilters,
+    init: init,
+    apply: apply,
+    toggleFilter: toggleFilter,
+    updatePriceFilter: updatePriceFilter,
+    reset: reset,
   };
 })();

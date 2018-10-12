@@ -24,7 +24,7 @@
       <h2 class="visually-hidden">Каталог товаров</h2>
 
       <aside class="catalog__sidebar">
-        <form action="/">
+        <form id="sidebar-form" action="/">
 
           <ul class="catalog__filter">
             <li class="input-btn">
@@ -138,6 +138,7 @@
 
       <div class="catalog__cards-wrap">
         <div class="catalog__cards catalog__cards--load">
+          <p class="catalog__empty visually-hidden">Ничего не найдено</p>
           <p class="catalog__load">Данные загружаются...</p>
         </div>
 
@@ -532,6 +533,7 @@
 <script src="js/tabs.js"></script>
 <script src="js/range-price-slider.js"></script>
 <script src="js/filters.js"></script>
+<script src="js/sorters.js"></script>
 <script src="js/goods.js"></script>
 <script src="js/payment-validation.js"></script>
 </body>
