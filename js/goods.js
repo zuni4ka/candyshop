@@ -166,6 +166,8 @@
       catalogCards.appendChild(catalogEmpty);
       catalogEmpty.classList.remove('visually-hidden');
     }
+
+    renderCart();
   };
 
   // меняет фаворит класс
@@ -203,6 +205,28 @@
     }
   };
 
+  var changeForm = function (form, disabled) {
+    var labels = form.getElementsByTagName('label');
+    var inputs = form.getElementsByTagName('input');
+    var textareas = form.getElementsByTagName('textarea');
+    var buttons = form.getElementsByTagName('button');
+    var selects = form.getElementsByTagName('select');
+
+    disableElements(inputs);
+    disableElements(textareas);
+    disableElements(buttons);
+    disableElements(selects);
+    disableElements(labels);
+
+    function disableElements(elements) {
+      var length = elements.length;
+      while (length--) {
+        elements[length].disabled = disabled;
+        elements[length].classList.toggle('disabled');
+      }
+    }
+  };
+
   var renderCart = function () {
     cart.innerHTML = '';
 
@@ -214,6 +238,9 @@
     } else {
       cart.appendChild(cartPlaceholder);
     }
+
+
+    changeForm(document.getElementById('form-order'), !cartList.length);
 
     updateHeaderCart();
   };
@@ -239,7 +266,6 @@
     }
 
     renderProducts();
-    renderCart();
   };
 
   // удяляет продукт из корзины
@@ -256,7 +282,6 @@
     }
 
     renderProducts();
-    renderCart();
   };
 
   // удяляет продукт из корзины
@@ -269,7 +294,6 @@
     delete cartData[id];
 
     renderProducts();
-    renderCart();
   };
 
   // добавляет продукт в корзину

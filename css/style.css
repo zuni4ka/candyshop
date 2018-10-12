@@ -1374,3 +1374,8 @@ body {
   padding-bottom: 0;
 }
 
+.disabled,
+[disabled] {
+  opacity: 0.5;
+  pointer-events: none;
+}
