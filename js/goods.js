@@ -205,28 +205,6 @@
     }
   };
 
-  var changeForm = function (form, disabled) {
-    var labels = form.getElementsByTagName('label');
-    var inputs = form.getElementsByTagName('input');
-    var textareas = form.getElementsByTagName('textarea');
-    var buttons = form.getElementsByTagName('button');
-    var selects = form.getElementsByTagName('select');
-
-    disableElements(inputs);
-    disableElements(textareas);
-    disableElements(buttons);
-    disableElements(selects);
-    disableElements(labels);
-
-    function disableElements(elements) {
-      var length = elements.length;
-      while (length--) {
-        elements[length].disabled = disabled;
-        elements[length].classList.toggle('disabled');
-      }
-    }
-  };
-
   var renderCart = function () {
     cart.innerHTML = '';
 
@@ -239,8 +217,7 @@
       cart.appendChild(cartPlaceholder);
     }
 
-
-    changeForm(document.getElementById('form-order'), !cartList.length);
+    utils.changeForm(orderForm, !cartList.length, true);
 
     updateHeaderCart();
   };
@@ -396,7 +373,7 @@
 
     filters.reset(products, minPrice, maxPrice);
 
-    document.getElementById('sidebar-form').reset();
+    document.querySelector('#sidebar-form').reset();
 
     slider.reset(priceSlider, minPrice, maxPrice);
 

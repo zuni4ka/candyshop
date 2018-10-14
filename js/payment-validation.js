@@ -9,6 +9,8 @@
   var fieldCardCVV = payment.querySelector('#payment__card-cvc');
   var fieldCardHolder = payment.querySelector('#payment__cardholder');
 
+  var CARD_NUMBER_LENGTH = 16;
+
   // valid example: 4111111111111111
   var luhnCheck = function (value) {
     if (/[^0-9-\s]+/.test(value)) {
@@ -64,7 +66,7 @@
 
     if (
       luhnCheck(target.value)
-      && target.value.length === 16
+      && target.value.length === CARD_NUMBER_LENGTH
     ) {
       target.setCustomValidity('');
     } else {

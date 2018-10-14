@@ -24,17 +24,12 @@
   var deliveryClickHandler = function (event) {
     var tab = event.target.id;
 
-    if (tab === '') {
-      return;
-    }
     if (tab === 'deliver__courier') {
       tabStore.classList.add('visually-hidden');
       tabCourier.classList.remove('visually-hidden');
-      window.order.formReset(tabStore);
-    } else {
+    } else if (tab === 'deliver__store') {
       tabCourier.classList.add('visually-hidden');
       tabStore.classList.remove('visually-hidden');
-      window.order.formReset(tabCourier);
     }
   };
 
@@ -53,6 +48,5 @@
   };
 
   tabStore.addEventListener('click', changeMap);
-
   deliveryBlock.addEventListener('click', deliveryClickHandler);
 })();

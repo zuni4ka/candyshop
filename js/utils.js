@@ -1,22 +1,33 @@
 'use strict';
 
 (function () {
-  // возвращает случайное булевое значение
-  var getRandomBoolean = function () {
-    return Math.random() > 0.5;
-  };
+  var changeForm = function (form, disabled, root) {
+    var labels = form.getElementsByTagName('label');
+    var inputs = form.getElementsByTagName('input');
+    var textareas = form.getElementsByTagName('textarea');
+    var selects = form.getElementsByTagName('select');
 
-  // возвращает случайное значение из диапазона чисел
-  var getRandomFromRange = function (max, min) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
+    disableElements(inputs);
+    disableElements(textareas);
+    disableElements(selects);
+    disableElements(labels);
 
-  // возвращает случайную строку из элементов массива
-  var getRandomStringFromArray = function (arr) {
-    var result = arr.filter(function filter() {
-      return getRandomBoolean();
-    });
-    return result.join(', ');
+    function disableElements(elements) {
+      Array.from(elements).forEach(function (element) {
+        element.disabled = disabled;
+
+        if (disabled) {
+          element.classList.add('disabled');
+        } else {
+          element.classList.remove('disabled');
+        }
+      });
+    }
+
+    if (root) {
+      document.querySelector('.buy__submit-btn').disabled = disabled;
+    }
+
   };
 
   // возвращает копию элемента найденного в темплейте
@@ -25,9 +36,7 @@
   };
 
   window.candyshop.utils = {
-    getRandomBoolean: getRandomBoolean,
-    getRandomFromRange: getRandomFromRange,
-    getRandomStringFromArray: getRandomStringFromArray,
+    changeForm: changeForm,
     getElementCopy: getElementCopy,
   };
 })();
