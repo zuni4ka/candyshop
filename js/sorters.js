@@ -39,18 +39,18 @@
 
   var apply = function (products) {
     var sortedProducts = {};
-    var sortedList = [];
+    var sorters = [];
     var productsList = Object.values(products);
 
     Object.values(sorterium).forEach(function (sorter) {
       if (sorter.isActive) {
-        sortedList = sorter.sorter
+        sorters = sorter.sorter
           ? productsList.sort(sorter.sorter)
           : productsList;
       }
     });
 
-    sortedList.forEach(function (product) {
+    sorters.forEach(function (product) {
       sortedProducts[product.id] = product;
     });
 

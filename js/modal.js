@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var KEY_ESCAPE = 27;
   var successModal = document.querySelector('.modal--success');
   var errorModal = document.querySelector('.modal--error');
 
@@ -20,7 +21,7 @@
   };
 
   var handleEscape = function (event, modal) {
-    if (event.keyCode === 27) {
+    if (event.keyCode === KEY_ESCAPE) {
       hideModal(modal);
     }
   };

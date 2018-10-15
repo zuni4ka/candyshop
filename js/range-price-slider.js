@@ -1,10 +1,10 @@
 'use strict';
 
-function recalculate(rangeValue, rangeMax, max) {
-  return parseInt(rangeValue * max / rangeMax, 10);
-}
-
 (function () {
+  function recalculate(rangeValue, rangeMax, max) {
+    return Math.floor(parseInt(rangeValue * max / rangeMax, 10));
+  }
+
   var init = function (rangeElement, min, max, callback) {
     var rangeFilter = rangeElement.querySelector('.range__filter');
     var btnRight = rangeElement.querySelector('.range__btn--right');

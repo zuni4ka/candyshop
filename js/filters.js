@@ -1,6 +1,10 @@
 'use strict';
 
 (function () {
+  var TYPE_CLEANER = 'cleaner';
+  var TYPE_ACCUMULATIVE = 'accumulative';
+  var TYPE_DECRESENT = 'decresent';
+
   var createFiltrarium = function (minPrice, maxPrice) {
     return {
       'filter-icecream': {
@@ -15,7 +19,7 @@
       },
       'filter-soda': {
         id: 'filter-soda',
-        type: 'accumulative',
+        type: TYPE_ACCUMULATIVE,
         count: 0,
         isActive: false,
         outputId: 'output-soda',
@@ -25,7 +29,7 @@
       },
       'filter-gum': {
         id: 'filter-gum',
-        type: 'accumulative',
+        type: TYPE_ACCUMULATIVE,
         count: 0,
         isActive: false,
         outputId: 'output-gum',
@@ -35,7 +39,7 @@
       },
       'filter-marmalade': {
         id: 'filter-marmalade',
-        type: 'accumulative',
+        type: TYPE_ACCUMULATIVE,
         count: 0,
         isActive: false,
         outputId: 'output-marmalade',
@@ -45,7 +49,7 @@
       },
       'filter-marshmallows': {
         id: 'filter-marshmallows',
-        type: 'accumulative',
+        type: TYPE_ACCUMULATIVE,
         count: 0,
         isActive: false,
         outputId: 'output-marshmallows',
@@ -55,7 +59,7 @@
       },
       'filter-sugar-free': {
         id: 'filter-sugar-free',
-        type: 'decresent',
+        type: TYPE_DECRESENT,
         count: 0,
         isActive: false,
         outputId: 'output-sugar-free',
@@ -65,7 +69,7 @@
       },
       'filter-vegetarian': {
         id: 'filter-vegetarian',
-        type: 'decresent',
+        type: TYPE_DECRESENT,
         count: 0,
         isActive: false,
         outputId: 'output-vegetarian',
@@ -75,7 +79,7 @@
       },
       'filter-gluten-free': {
         id: 'filter-gluten-free',
-        type: 'decresent',
+        type: TYPE_DECRESENT,
         count: 0,
         isActive: false,
         outputId: 'output-gluten-free',
@@ -85,7 +89,7 @@
       },
       'filter-availability': {
         id: 'filter-availability',
-        type: 'cleaner',
+        type: TYPE_CLEANER,
         count: 0,
         isActive: false,
         outputId: 'output-availability',
@@ -95,7 +99,7 @@
       },
       'filter-favorite': {
         id: 'filter-favorite',
-        type: 'cleaner',
+        type: TYPE_CLEANER,
         count: 0,
         isActive: false,
         outputId: 'output-favorite',
@@ -105,7 +109,7 @@
       },
       'filter-price': {
         id: 'filter-price',
-        type: 'decresent',
+        type: TYPE_DECRESENT,
         count: 0,
         min: minPrice,
         max: maxPrice,
@@ -142,14 +146,14 @@
     var filters = Object.values(filtrarium);
 
     filters.forEach(function (filter) {
-      if (filter.isActive && filter.type === 'cleaner') {
+      if (filter.isActive && filter.type === TYPE_CLEANER) {
         filters.forEach(function (otherFilter) {
           if (
             otherFilter.id !== filter.id
           ) {
             if (otherFilter.id !== 'filter-price') {
               otherFilter.isActive = false;
-              document.getElementById(otherFilter.id).checked = false;
+              document.querySelector('#' + otherFilter.id).checked = false;
             }
           }
         });
@@ -157,7 +161,7 @@
     });
 
     filters.forEach(function (filter) {
-      if (filter.isActive && filter.type === 'accumulative') {
+      if (filter.isActive && filter.type === TYPE_ACCUMULATIVE) {
         productKeys.forEach(function (key) {
           var product = products[key];
 
@@ -176,8 +180,8 @@
       if (
         filter.isActive
         && (
-          filter.type === 'decresent'
-          || filter.type === 'cleaner'
+          filter.type === TYPE_DECRESENT
+          || filter.type === TYPE_CLEANER
         )
       ) {
         Object.keys(filteredProducts).forEach(function (key) {
@@ -216,7 +220,7 @@
       var id = filtrarium[key].outputId;
 
       if (id) {
-        document.getElementById(id).textContent = wrapInParentheses(filtrarium[key].count);
+        document.querySelector('#' + id).textContent = wrapInParentheses(filtrarium[key].count);
       }
     });
   }
@@ -228,12 +232,12 @@
   var toggleFilter = function (id, status) {
     if (id === 'filter-favorite') {
       filtrarium['filter-availability'].isActive = false;
-      document.getElementById('filter-availability').checked = false;
+      document.querySelector('#filter-availability').checked = false;
     }
 
     if (id === 'filter-availability') {
       filtrarium['filter-favorite'].isActive = false;
-      document.getElementById('filter-favorite').checked = false;
+      document.querySelector('#filter-favorite').checked = false;
     }
 
     filtrarium[id].isActive = status;
