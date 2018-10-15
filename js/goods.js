@@ -199,9 +199,9 @@
     var amount = getCartItemsAmount();
 
     if (amount) {
-      headerCart.innerHTML = 'Продуктов в корзине: ' + amount;
+      headerCart.textContent = 'Продуктов в корзине: ' + amount;
     } else {
-      headerCart.innerHTML = headerCartTextEmpty;
+      headerCart.textContent = headerCartTextEmpty;
     }
   };
 
