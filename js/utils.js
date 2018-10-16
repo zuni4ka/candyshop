@@ -14,6 +14,10 @@
 
     function disableElements(elements) {
       Array.from(elements).forEach(function (element) {
+        if (root && element.classList.contains('delivery-input')) {
+          return;
+        }
+
         element.disabled = disabled;
 
         if (disabled) {

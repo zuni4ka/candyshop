@@ -261,7 +261,7 @@
                         name="card-date"
                         id="payment__card-date"
                         placeholder="мм/гг"
-                        pattern="^((0[1-9])|(1[0-2]))[\/\.\-]*((18)|(2[1-9]))$"
+                        pattern="^((0[1-9])|(1[0-2]))\/(\d{2})$"
                         required
                       />
                       <label class="text-input__label" for="payment__card-date">мм/гг</label>
@@ -400,10 +400,11 @@
                   <li class="text-input deliver__street">
                     <input
                       type="text"
-                      class="text-input__input"
+                      class="text-input__input delivery-input"
                       name="deliver-street"
                       id="deliver__street"
                       placeholder="Улица"
+                      disabled
                       required
                     >
                     <label class="text-input__label" for="deliver__street">Улица</label>
@@ -412,10 +413,11 @@
                   <li class="text-input deliver__house">
                     <input
                       type="text"
-                      class="text-input__input"
+                      class="text-input__input delivery-input"
                       name="deliver-house"
                       id="deliver__house"
                       placeholder="Дом"
+                      disabled
                       required
                     >
                     <label class="text-input__label" for="deliver__house">Дом</label>
@@ -424,11 +426,12 @@
                   <li class="text-input deliver__floor">
                     <input
                       type="text"
-                      class="text-input__input"
+                      class="text-input__input delivery-input"
                       name="deliver-floor"
                       id="deliver__floor"
                       placeholder="Эт."
                       pattern="[0-9]+"
+                      disabled
                     >
                     <label class="text-input__label" for="deliver__floor">Эт.</label>
                   </li>
@@ -436,10 +439,11 @@
                   <li class="text-input deliver__room">
                     <input
                       type="text"
-                      class="text-input__input"
+                      class="text-input__input delivery-input"
                       name="deliver-room"
                       id="deliver__room"
                       placeholder="Кв."
+                      disabled
                       required
                     >
                     <label class="text-input__label" for="deliver__room">Кв.</label>
@@ -447,7 +451,7 @@
                 </ul>
                 <label>
                   <span class="visually-hidden">Описание доставки</span>
-                  <textarea name="deliver-description" class="deliver__textarea" placeholder="Здесь можешь добавить любые доставки — в какое время готов встретить; как быстрее к тебе добраться; кодовое слово для консьержки... Любая уточняющая информация будет очень кстати."></textarea>
+                  <textarea disabled name="deliver-description" class="deliver__textarea" placeholder="Здесь можешь добавить любые доставки — в какое время готов встретить; как быстрее к тебе добраться; кодовое слово для консьержки... Любая уточняющая информация будет очень кстати."></textarea>
                 </label>
               </fieldset>
             </div>
