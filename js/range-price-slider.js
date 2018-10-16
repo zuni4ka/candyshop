@@ -2,7 +2,7 @@
 
 (function () {
   function recalculate(rangeValue, rangeMax, max) {
-    return Math.floor(parseInt(rangeValue * max / rangeMax, 10));
+    return Math.floor(rangeValue * max / rangeMax, 10);
   }
 
   var init = function (rangeElement, min, max, callback) {

@@ -183,17 +183,36 @@
 
               <ul class="contact-data__inputs">
                 <li class="text-input contact-data__input-wrap">
-                  <input type="text" class="text-input__input" name="name" id="contact-data__name" placeholder="Имя">
+                  <input
+                  type="text"
+                  class="text-input__input"
+                  name="name"
+                  id="contact-data__name"
+                  placeholder="Имя"
+                  required
+                  />
                   <label for="contact-data__name" class="text-input__label">Имя</label>
                 </li>
 
                 <li class="text-input contact-data__input-wrap">
-                  <input type="text" class="text-input__input" name="tel" id="contact-data__tel" placeholder="Телефон">
+                  <input
+                  type="text"
+                  class="text-input__input"
+                  name="tel"
+                  id="contact-data__tel"
+                  placeholder="Телефон"
+                  required
+                  />
                   <label for="contact-data__tel" class="text-input__label">Телефон</label>
                 </li>
 
                 <li class="text-input contact-data__input-wrap">
-                  <input type="text" class="text-input__input" name="email" id="contact-data__email" placeholder="Почта">
+                  <input type="email"
+                  class="text-input__input"
+                  name="email"
+                  id="contact-data__email"
+                  placeholder="Почта"
+                  />
                   <label for="contact-data__email" class="text-input__label">Почта</label>
                 </li>
 
@@ -241,7 +260,7 @@
                         name="card-date"
                         id="payment__card-date"
                         placeholder="мм/гг"
-                        pattern="^(0[1-9]|1[0-2])\/\d{2}$"
+                        pattern="^((0[1-9])|(1[0-2]))[\/\.\-]*((18)|(2[1-9]))$"
                         required
                       />
                       <label class="text-input__label" for="payment__card-date">мм/гг</label>
